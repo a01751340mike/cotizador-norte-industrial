@@ -1,0 +1,15 @@
+clave,valor,unidad,descripcion
+iva,0.16,fraccion,IVA aplicado sobre el subtotal
+margen_minimo,0.18,fraccion,Margen mínimo por línea: (precio neto - costo) / precio neto
+desc_tramo1_desde,50,unidades,Cantidad desde la que aplica el primer descuento por volumen
+desc_tramo1_pct,5,porcentaje,Descuento de tabla para 50 a 199 unidades
+desc_tramo2_desde,200,unidades,Cantidad desde la que aplica el segundo descuento por volumen
+desc_tramo2_pct,8,porcentaje,Descuento de tabla para 200 o más unidades
+paso_ajuste_desc,0.5,porcentaje,Paso para bajar el descuento cuando una línea queda bajo el margen
+max_lineas,10,lineas,Máximo de líneas por solicitud
+subtotal_maximo,250000,MXN,Subtotal máximo antes de pasar a FUERA_DE_POLITICA
+vigencia_dias,7,dias naturales,Vigencia de la cotización desde la emisión simulada
+aprobacion_expira_min,15,minutos,Tiempo máximo para que GER-01 apruebe o rechace
+max_iteraciones_loop,3,iteraciones,Máximo de vueltas Cotizador-Revisor
+limite_costo_usd_caso,PENDIENTE,USD,Presupuesto de IA por caso (se fija con la tarifa del modelo)
+modo,SIMULADO,texto,Modo de operación por defecto

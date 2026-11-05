@@ -1,0 +1,13 @@
+proveedor,servicio,modelo_o_plan,concepto,unidad_cobro,tarifa_usd,condicion,fuente_url,fecha_consulta,nota
+Anthropic,LLM,claude-haiku-5-5,tokens de entrada,USD por millón de tokens,0.10,prompts de hasta 100000 tokens,https://platform.claude.com/docs/en/models/haiku-5-5/overview,2026-11-04,Modelo previsto para los 5 roles
+Anthropic,LLM,claude-haiku-5-5,tokens de salida,USD por millón de tokens,0.50,prompts de hasta 100000 tokens,https://platform.claude.com/docs/en/models/haiku-5-5/overview,2026-11-04,
+Anthropic,LLM,claude-haiku-5-5,tokens de entrada,USD por millón de tokens,0.50,prompts de más de 100000 tokens,https://platform.claude.com/docs/en/models/haiku-5-5/overview,2026-11-04,No se espera en este proyecto
+Anthropic,LLM,claude-haiku-5-5,tokens de salida,USD por millón de tokens,2.50,prompts de más de 100000 tokens,https://platform.claude.com/docs/en/models/haiku-5-5/overview,2026-11-04,No se espera en este proyecto
+Anthropic,LLM,claude-haiku-5-5,lectura de caché,USD por millón de tokens,0.01,prompts de hasta 100000 tokens,https://platform.claude.com/docs/en/models/haiku-5-5/overview,2026-11-04,Solo si se usa prompt caching
+Anthropic,LLM,claude-sonnet-5-5,tokens de entrada,USD por millón de tokens,2.00,tarifa única,https://platform.claude.com/docs/en/about-claude/pricing,2026-11-04,Alternativa si Haiku no alcanza la calidad
+Anthropic,LLM,claude-sonnet-5-5,tokens de salida,USD por millón de tokens,10.00,tarifa única,https://platform.claude.com/docs/en/about-claude/pricing,2026-11-04,Alternativa si Haiku no alcanza la calidad
+ElevenLabs,Agents,plan Free,minuto de llamada,USD por minuto,0.08,15 minutos incluidos por mes; 4 llamadas simultáneas,https://elevenlabs.io/pricing/agents,2026-11-04,Verificar el plan real de la cuenta
+ElevenLabs,Agents,todos los planes,LLM del agente,según modelo,,A costo; varía por modelo,https://elevenlabs.io/pricing/agents,2026-11-04,Tomar el valor del panel de ElevenLabs al elegir modelo
+n8n,Cloud,POR VERIFICAR,plan mensual,USD por mes,,POR VERIFICAR,https://n8n.io/pricing/,,Revisar plan y ejecuciones incluidas en la cuenta
+Telegram,Bot API,gratuito,mensajes,no aplica,0,no consume tokens de LLM,https://core.telegram.org/bots/api,2026-11-04,Tokenización no aplica
+GitHub,Pages y Actions,POR VERIFICAR,minutos de Actions y hosting,según plan,,POR VERIFICAR,https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages,,Revisar plan de la cuenta

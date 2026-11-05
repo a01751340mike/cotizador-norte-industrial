@@ -1,0 +1,31 @@
+sku,producto,categoria,unidad,precio_lista_mxn,costo_mxn,stock,desc_max_pct
+CAB-THW-12R,"Cable THW-LS cal. 12 rojo, rollo 100 m",Cable,rollo,1450.00,1116.50,40,8
+CAB-THW-12N,"Cable THW-LS cal. 12 negro, rollo 100 m",Cable,rollo,1450.00,1116.50,35,8
+CAB-THW-10R,"Cable THW-LS cal. 10 rojo, rollo 100 m",Cable,rollo,2290.00,1786.20,18,8
+CAB-THW-14B,"Cable THW-LS cal. 14 blanco, rollo 100 m",Cable,rollo,980.00,744.80,60,8
+CAB-USO-3X12,"Cable uso rudo 3x12, rollo 50 m",Cable,rollo,2650.00,1961.00,12,5
+CAB-UTP-C6,"Cable UTP cat. 6, caja 305 m",Cable,caja,3150.00,2205.00,9,5
+ILU-LED-9W,Foco LED 9 W luz fría E27,Iluminación,pieza,38.00,23.56,900,8
+ILU-LED-12W,Foco LED 12 W luz cálida E27,Iluminación,pieza,52.00,32.76,650,8
+ILU-PAN-60,Panel LED 60x60 cm 40 W,Iluminación,pieza,620.00,421.60,120,8
+ILU-REF-50W,Reflector LED exterior 50 W,Iluminación,pieza,410.00,270.60,80,5
+ILU-TUB-T8,Tubo LED T8 18 W 120 cm,Iluminación,pieza,95.00,67.45,400,8
+ILU-CAM-LED,Campana industrial LED 100 W,Iluminación,pieza,1890.00,1304.10,25,5
+PRO-ITM-1P20,Interruptor termomagnético 1P 20 A,Protección,pieza,135.00,97.20,300,8
+PRO-ITM-1P30,Interruptor termomagnético 1P 30 A,Protección,pieza,142.00,102.24,220,8
+PRO-ITM-2P40,Interruptor termomagnético 2P 40 A,Protección,pieza,395.00,276.50,90,5
+PRO-CC-8,Centro de carga 8 circuitos,Protección,pieza,780.00,530.40,45,5
+PRO-DIF-25,Interruptor diferencial 2P 25 A,Protección,pieza,1150.00,770.50,30,5
+PRO-SUP-110,Supresor de picos 127 V,Protección,pieza,520.00,338.00,40,5
+CAN-CON-12,"Tubo conduit PVC 1/2"" tramo 3 m",Canalización,tramo,34.00,26.18,1500,8
+CAN-CON-34,"Tubo conduit PVC 3/4"" tramo 3 m",Canalización,tramo,49.00,37.24,1100,8
+CAN-GAL-12,"Tubo conduit galvanizado 1/2"" tramo 3 m",Canalización,tramo,165.00,120.45,300,5
+CAN-CHA-RAN,Charola tipo malla 10 cm tramo 3 m,Canalización,tramo,690.00,483.00,60,5
+CAN-CAJ-CH,Caja chalupa PVC,Canalización,pieza,7.00,4.20,3000,8
+ACC-CON-DUP,Contacto dúplex polarizado 15 A,Accesorios,pieza,48.00,36.96,800,8
+ACC-APA-SEN,Apagador sencillo 15 A,Accesorios,pieza,39.00,28.86,750,8
+ACC-PLA-2V,Placa de 2 ventanas,Accesorios,pieza,22.00,14.08,900,8
+ACC-CIN-AIS,Cinta de aislar 19 mm x 18 m,Accesorios,pieza,18.00,10.80,1200,8
+HER-PIN-COR,"Pinza de corte 8""",Herramienta,pieza,310.00,192.20,50,5
+HER-MUL-DIG,Multímetro digital básico,Herramienta,pieza,560.00,358.40,35,5
+HER-PEL-AUT,Pelacables automático,Herramienta,pieza,420.00,264.60,40,5

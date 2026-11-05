@@ -1,0 +1,1 @@
+fecha_hora,caso_id,llamada_id,etapa,agente,proveedor,modelo,tokens_entrada,tokens_salida,tokens_cache,duracion_voz_seg,unidad_cobro,tarifa_entrada_usd_mtok,tarifa_salida_usd_mtok,costo_usd,moneda,estado,reintento,origen_dato
