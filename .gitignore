@@ -1,0 +1,14 @@
+# Nunca subir secretos ni datos privados
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+credentials*.json
+# Exportaciones privadas de n8n (pueden traer IDs o datos)
+n8n/privado/
+datos/privado/
+# Sistema
+.DS_Store
+__pycache__/
+node_modules/
