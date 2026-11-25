@@ -316,7 +316,7 @@ function exportarPanel(casos, costos, ahoraISO) {
     const costoCaso = (costos || []).filter((k) => k.caso_id === c.caso_id).reduce((a, k) => a + Number(k.costo_usd || 0), 0);
     return {
       caso_id: c.caso_id,
-      fecha: c.ts_recibido ? String(c.ts_recibido).slice(0, 10) : null,
+      fecha: /^COT-\d{8}-/.test(c.caso_id || '') ? c.caso_id.slice(4, 8) + '-' + c.caso_id.slice(8, 10) + '-' + c.caso_id.slice(10, 12) : null, // fecha local (CDMX) del folio
       canal: c.canal,
       estado: c.estado,
       version_final: c.version_aprobada || c.version_actual || null,

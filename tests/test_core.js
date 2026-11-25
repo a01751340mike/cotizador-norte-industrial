@@ -144,6 +144,7 @@ t('el panel no expone seudónimos, clientes ni chat_id', () => {
   assert.strictEqual(p.kpis.tasa_aprobacion_pct, 100);
   assert.strictEqual(p.kpis.tasa_primera_vuelta_pct, 0);
   assert.strictEqual(p.kpis.respuesta_mediana_seg, 12);
+  assert.strictEqual(p.casos[0].fecha, '2026-11-25');
 });
 
 console.log(`\n${ok} pruebas aprobadas, ${fallas} fallidas`);
