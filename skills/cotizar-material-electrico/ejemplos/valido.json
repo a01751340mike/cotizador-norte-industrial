@@ -1,0 +1,7 @@
+{
+  "entrada": "Cotización para Taller Eléctrico Ruiz: 250 contactos dúplex, 12 rollos de cable THW calibre 12 rojo y 60 pastillas de 20 amperes",
+  "lineas_agente2": ["ACC-CON-DUP x250", "CAB-THW-12R x12", "PRO-ITM-1P20 x60"],
+  "V1": {"ACC-CON-DUP": {"descuento_pct": 8, "margen_pct": 16.30}, "dictamen_revisor": "DEVUELTO (margen < 18 %)"},
+  "V2": {"ACC-CON-DUP": {"descuento_pct": 6, "margen_pct": 18.09}, "subtotal_mxn": 36375.00, "iva_mxn": 5820.00, "total_mxn": 42195.00, "dictamen_revisor": "APROBADO"},
+  "salida_modelo_esperada": {"supuestos": ["Precios en MXN sin flete, vigencia de 7 días naturales.", "Descuento por volumen: 6 % en contactos dúplex (ajustado para cumplir margen mínimo) y 5 % en pastillas de 20 A.", "Cable THW calibre 12 sin descuento por cantidad menor a 50 rollos."], "nota_comercial": "Propuesta simulada para revisión de gerencia.", "total_mencionado_mxn": 42195.00}
+}

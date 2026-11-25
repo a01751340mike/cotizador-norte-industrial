@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Entrada del orquestador",
+  "type": "object",
+  "required": ["caso_id", "canal", "solicitante", "objetivo", "datos", "modo", "limite_costo_usd"],
+  "additionalProperties": false,
+  "properties": {
+    "caso_id": { "type": "string", "pattern": "^COT-\\d{8}-\\d{3}$" },
+    "canal": { "enum": ["telegram", "voz"] },
+    "solicitante": { "type": "string", "pattern": "^(VEN|GER)-\\d{2}$|^VOZ-PUBLICO$", "description": "Seudónimo, nunca el chat_id" },
+    "objetivo": { "const": "cotizar" },
+    "datos": {
+      "type": "object",
+      "required": ["texto"],
+      "properties": { "texto": { "type": "string", "minLength": 10, "maxLength": 800 } }
+    },
+    "modo": { "const": "SIMULADO" },
+    "limite_costo_usd": { "type": "number", "exclusiveMinimum": 0, "maximum": 0.05 }
+  }
+}

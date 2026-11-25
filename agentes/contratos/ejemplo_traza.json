@@ -1,0 +1,14 @@
+{
+  "nota": "Formato de la traza sanitizada que guarda el orquestador. Las trazas reales están en evidencias/.",
+  "caso_id": "COT-20261125-001",
+  "pasos": [
+    {"agente": "orquestador", "estado": "OK", "resultado": {"plan": ["agente1_intake", "agente2_catalogo", "agente3_cotizador", "agente4_revisor"], "skills": [{"nombre": "cotizar-material-electrico", "version": "1.0.0", "huella": "…"}, {"nombre": "revisar-cotizacion", "version": "1.0.0", "huella": "…"}]}, "llamada_id": null},
+    {"agente": "agente1_intake", "estado": "OK", "llamada_id": "COT-20261125-001-L1"},
+    {"agente": "agente2_catalogo", "estado": "OK", "llamada_id": "COT-20261125-001-L2", "fuentes": ["catalogo:ACC-CON-DUP", "catalogo:CAB-THW-12R", "catalogo:PRO-ITM-1P20"]},
+    {"agente": "agente3_cotizador", "version": 1, "estado": "OK", "llamada_id": "COT-20261125-001-L3"},
+    {"agente": "agente4_revisor", "version": 1, "estado": "DEVUELTO", "llamada_id": null, "resultado": {"hallazgos": [{"tipo": "MARGEN", "sku": "ACC-CON-DUP"}]}},
+    {"agente": "agente3_cotizador", "version": 2, "estado": "OK", "llamada_id": "COT-20261125-001-L4"},
+    {"agente": "agente4_revisor", "version": 2, "estado": "APROBADO", "llamada_id": "COT-20261125-001-L5"},
+    {"agente": "orquestador", "estado": "PENDIENTE_APROBACION", "llamada_id": null}
+  ]
+}

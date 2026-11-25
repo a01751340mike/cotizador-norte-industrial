@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Salida de cada paso (orquestador y agentes 1-4)",
+  "type": "object",
+  "required": ["caso_id", "agente", "estado", "resultado", "fuentes", "advertencias", "duracion_ms", "llamada_id"],
+  "properties": {
+    "caso_id": { "type": "string" },
+    "agente": { "enum": ["orquestador", "agente1_intake", "agente2_catalogo", "agente3_cotizador", "agente4_revisor"] },
+    "version": { "type": "integer", "minimum": 1, "maximum": 3 },
+    "estado": { "enum": ["OK", "ACLARACION", "INSUFICIENTE", "DEVUELTO", "APROBADO", "FUERA_DE_POLITICA", "DETENIDO_LIMITE", "ERROR"] },
+    "resultado": { "type": ["object", "null"] },
+    "fuentes": { "type": "array", "items": { "type": "string" } },
+    "advertencias": { "type": "array", "items": { "type": "string" } },
+    "duracion_ms": { "type": "integer", "minimum": 0 },
+    "llamada_id": { "type": ["string", "null"], "description": "Referencia a la fila de la tabla costos; null si el paso no usó modelo" },
+    "tokens_entrada": { "type": ["integer", "null"] },
+    "tokens_salida": { "type": ["integer", "null"] },
+    "costo_usd": { "type": ["number", "null"] }
+  }
+}

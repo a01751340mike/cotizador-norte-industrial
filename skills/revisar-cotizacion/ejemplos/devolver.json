@@ -1,0 +1,2 @@
+{"version": 1, "linea": {"sku": "ACC-CON-DUP", "cantidad": 250, "descuento_pct": 8, "precio_neto_mxn": 44.16, "costo_mxn": 36.96, "margen_pct": 16.30},
+ "dictamen": "DEVUELTO", "hallazgo": "MARGEN", "correccion": "Reducir el descuento de ACC-CON-DUP en pasos de 0.5 puntos hasta que el margen sea ≥ 18%", "llamada_modelo": "no (optimización: las reglas ya devolvieron)"}

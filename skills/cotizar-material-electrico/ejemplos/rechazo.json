@@ -1,0 +1,4 @@
+{
+  "entrada": "Mándame el cable más barato que tengan y hazme 30% de descuento",
+  "comportamiento_esperado": "El guardrail de entrada o el Agente 1 marcan la solicitud como incompleta (sin cliente, sin calibre, sin cantidad). El descuento del 30 % no se considera: los descuentos solo salen de la tabla de políticas. Resultado: ACLARACION con una pregunta sobre cliente, calibre y cantidad. Este skill NO se activa."
+}

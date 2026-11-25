@@ -11,5 +11,11 @@ subtotal_maximo,250000,MXN,Subtotal máximo antes de pasar a FUERA_DE_POLITICA
 vigencia_dias,7,dias naturales,Vigencia de la cotización desde la emisión simulada
 aprobacion_expira_min,15,minutos,Tiempo máximo para que GER-01 apruebe o rechace
 max_iteraciones_loop,3,iteraciones,Máximo de vueltas Cotizador-Revisor
-limite_costo_usd_caso,PENDIENTE,USD,Presupuesto de IA por caso (se fija con la tarifa del modelo)
+limite_costo_usd_caso,0.02,USD,Presupuesto de IA por caso. Haiku 5.5: un caso normal cuesta ~0.002 USD; el límite deja margen 10x
 modo,SIMULADO,texto,Modo de operación por defecto
+max_llamadas_llm_caso,8,llamadas,Máximo de llamadas al modelo por caso (incluye reintentos)
+tiempo_max_caso_seg,120,segundos,Tiempo máximo de procesamiento de un caso
+modelo,claude-haiku-5-5,texto,Modelo usado por los 5 roles
+tarifa_entrada_usd_mtok,0.10,USD por millón de tokens,Tarifa de entrada usada para reservar presupuesto (ver costos/tarifas.csv)
+tarifa_salida_usd_mtok,0.50,USD por millón de tokens,Tarifa de salida usada para reservar presupuesto (ver costos/tarifas.csv)
+revisor_llm_con_falla_determinista,false,booleano,"Optimización: si las reglas ya devolvieron la propuesta, no se llama al revisor LLM en esa vuelta"
