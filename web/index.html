@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cotizador Norte Industrial · Panel de cotizaciones (simulado)</title>
+<meta name="description" content="Panel público con datos ficticios y sanitizados del cotizador con agentes de Distribuidora Norte Industrial.">
+<style>
+  :root {
+    --bg: #f6f5f1; --card: #ffffff; --ink: #1d232b; --muted: #55606e; --line: #d9dce1;
+    --accent: #0b5cad; --ok: #1f7a4d; --warn: #9a5b00; --bad: #b3261e; --neutral: #5b6573;
+    --focus: #ffb000;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.45; }
+  a { color: var(--accent); }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .skip { position: absolute; left: -999px; top: 0; background: var(--ink); color: #fff; padding: .5rem 1rem; }
+  .skip:focus { left: 0; z-index: 10; }
+  header { background: var(--ink); color: #fff; padding: 1.25rem 1rem; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 1rem; }
+  header .wrap { padding: 0; }
+  h1 { font-size: 1.45rem; margin: 0 0 .25rem; }
+  header p { margin: .15rem 0; color: #d6dbe2; font-size: .92rem; }
+  .badge { display: inline-block; background: #ffe08a; color: #3b2b00; font-weight: 700; font-size: .78rem; padding: .15rem .5rem; border-radius: 4px; letter-spacing: .02em; }
+  .meta { display: flex; flex-wrap: wrap; gap: .35rem 1.25rem; margin-top: .6rem; font-size: .85rem; color: #c7cdd6; }
+  .meta b { color: #fff; font-weight: 600; }
+  main { padding: 1.25rem 0 3rem; }
+  section { margin-bottom: 1.5rem; }
+  h2 { font-size: 1.1rem; margin: 0 0 .6rem; }
+  .lead { margin: 0 0 1rem; color: var(--muted); max-width: 70ch; }
+  .estado { padding: .75rem 1rem; border-radius: 6px; margin-bottom: 1rem; border: 1px solid var(--line); background: var(--card); }
+  .estado[data-tipo="error"] { border-color: var(--bad); background: #fdf0ef; }
+  .estado[data-tipo="viejo"] { border-color: var(--warn); background: #fff7e8; }
+  .estado[data-tipo="carga"] { color: var(--muted); }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: .75rem; }
+  .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: .9rem 1rem; }
+  .kpi h3 { margin: 0; font-size: .9rem; font-weight: 600; color: var(--muted); }
+  .kpi .valor { font-size: 2rem; font-weight: 700; margin: .2rem 0; font-variant-numeric: tabular-nums; }
+  .kpi .def { font-size: .78rem; color: var(--muted); margin: 0; }
+  .kpi .lectura { font-size: .85rem; margin: .4rem 0 0; }
+  .grid2 { display: grid; grid-template-columns: 1.2fr 1fr; gap: .75rem; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; min-width: 0; }
+  .barras { list-style: none; margin: .5rem 0 0; padding: 0; }
+  .barras li { display: grid; grid-template-columns: 11.5rem 1fr 2.5rem; align-items: center; gap: .5rem; margin: .35rem 0; font-size: .88rem; }
+  .barras .pista { background: #eceef1; border-radius: 3px; height: 1.1rem; overflow: hidden; }
+  .barras .barra { height: 100%; border-radius: 3px; }
+  .barras .n { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .resumen { font-size: .9rem; margin: .75rem 0 0; padding-top: .6rem; border-top: 1px dashed var(--line); }
+  .filtros { display: flex; flex-wrap: wrap; gap: .6rem; align-items: end; margin-bottom: .75rem; }
+  .filtros label { display: flex; flex-direction: column; font-size: .8rem; color: var(--muted); gap: .2rem; }
+  select, input, button { font: inherit; padding: .4rem .55rem; border: 1px solid #9aa3ad; border-radius: 5px; background: #fff; color: var(--ink); min-height: 2.25rem; }
+  button { cursor: pointer; background: var(--ink); color: #fff; border-color: var(--ink); }
+  button.sec { background: #fff; color: var(--ink); }
+  .tabla-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+  caption { text-align: left; font-size: .82rem; color: var(--muted); padding-bottom: .4rem; }
+  th, td { padding: .45rem .5rem; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+  th { font-weight: 600; background: #f0f1f3; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .pill { display: inline-block; padding: .05rem .45rem; border-radius: 99px; font-size: .78rem; font-weight: 600; border: 1px solid currentColor; }
+  .vacio { color: var(--muted); padding: 1rem 0; }
+  .voz { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .consent { font-size: .88rem; }
+  .consent ul { padding-left: 1.1rem; margin: .4rem 0; }
+  .aviso { font-size: .85rem; color: var(--muted); }
+  #voz-estado { margin-top: .5rem; font-size: .88rem; }
+  footer { font-size: .8rem; color: var(--muted); border-top: 1px solid var(--line); padding: 1rem 0 2rem; }
+  @media (max-width: 760px) {
+    .grid2, .voz { grid-template-columns: 1fr; }
+    .barras li { grid-template-columns: 8.5rem 1fr 2rem; }
+    h1 { font-size: 1.2rem; }
+    .kpi .valor { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header>
+  <div class="wrap">
+    <span class="badge">DATOS FICTICIOS · MODO SIMULADO</span>
+    <h1>Distribuidora Norte Industrial · Cotizador con agentes</h1>
+    <p>Propósito: que la gerencia comercial vea si las cotizaciones salen rápido, bien revisadas y a qué costo de IA, para decidir si amplía su uso.</p>
+    <div class="meta" aria-live="polite">
+      <span>Periodo: <b id="m-periodo">—</b></span>
+      <span>Fuente: <b id="m-fuente">—</b></span>
+      <span>Actualizado: <b id="m-generado">—</b></span>
+    </div>
+  </div>
+</header>
+
+<main id="contenido" class="wrap">
+  <div id="estado" class="estado" data-tipo="carga" role="status">Cargando datos del panel…</div>
+
+  <section aria-labelledby="t-kpi">
+    <h2 id="t-kpi">Indicadores del proceso</h2>
+    <p class="lead">Cada caso entra por Telegram o por voz, pasa por 4 agentes y un revisor, y la gerencia aprueba en Telegram. Los indicadores se calculan solo con casos del registro exportado.</p>
+    <div class="kpis">
+      <article class="kpi">
+        <h3>Aprobación de gerencia</h3>
+        <div class="valor" id="k1">—</div>
+        <p class="def">Aprobadas ÷ (aprobadas + rechazadas). Unidad: %. Excluye expiradas y pendientes. <span id="k1d"></span></p>
+        <p class="lectura" id="k1l"></p>
+      </article>
+      <article class="kpi">
+        <h3>Propuestas correctas a la primera</h3>
+        <div class="valor" id="k2">—</div>
+        <p class="def">Propuestas aprobadas por el revisor en V1 ÷ propuestas generadas. Unidad: %. <span id="k2d"></span></p>
+        <p class="lectura" id="k2l"></p>
+      </article>
+      <article class="kpi">
+        <h3>Tiempo de respuesta (mediana)</h3>
+        <div class="valor" id="k3">—</div>
+        <p class="def">Mediana de segundos entre la recepción y la propuesta lista para aprobación. <span id="k3d"></span></p>
+        <p class="lectura" id="k3l"></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="grid2" aria-label="Distribución y costo">
+    <div class="card">
+      <h2 id="t-dist">¿Dónde terminan los casos?</h2>
+      <p class="aviso">Casos por estado final con los filtros aplicados. La barra y el número dicen lo mismo; el color solo agrupa (verde = cerrado bien, ámbar = requiere acción, rojo = detenido).</p>
+      <ul class="barras" id="barras" aria-describedby="t-dist"></ul>
+      <p class="resumen" id="resumen"></p>
+    </div>
+    <div class="card">
+      <h2>Costo de IA por caso</h2>
+      <p class="kpi" style="border:0;padding:0;margin:0"><span class="valor" id="k4">—</span></p>
+      <p class="def aviso">Costo variable medido de llamadas al modelo de los casos cerrados ÷ número de casos cerrados (USD por caso). Los casos fallidos se reportan aparte en costos.csv. <span id="k4d"></span></p>
+      <p class="aviso">Tokens reportados por el proveedor y tarifa vigente de Claude Haiku 5.5. No incluye cargos fijos de n8n ni minutos de voz (ver informe de costos).</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-hist">
+    <h2 id="t-hist">Historial sanitizado</h2>
+    <form class="filtros" id="filtros" onsubmit="return false">
+      <label>Canal
+        <select id="f-canal"><option value="">Todos</option><option value="telegram">Telegram</option><option value="voz">Voz</option></select>
+      </label>
+      <label>Estado
+        <select id="f-estado"><option value="">Todos</option></select>
+      </label>
+      <label>Desde <input type="date" id="f-desde"></label>
+      <label>Hasta <input type="date" id="f-hasta"></label>
+      <button type="button" class="sec" id="f-reset">Restablecer filtros</button>
+    </form>
+    <div class="tabla-wrap" tabindex="0" aria-label="Tabla de casos, desplazable">
+      <table>
+        <caption id="cap">Sin nombres ni conversaciones: solo folio, canal, estado y cifras simuladas.</caption>
+        <thead><tr>
+          <th scope="col">Folio</th><th scope="col">Fecha</th><th scope="col">Canal</th><th scope="col">Estado</th>
+          <th scope="col">Versión</th><th scope="col">Líneas</th><th scope="col">Total MXN (simulado)</th><th scope="col">Respuesta (s)</th><th scope="col">Costo IA (USD)</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <p class="vacio" id="sin-resultados" hidden>No hay casos con esos filtros. Usa “Restablecer filtros”.</p>
+  </section>
+
+  <section aria-labelledby="t-voz">
+    <h2 id="t-voz">Asistente de voz</h2>
+    <div class="voz">
+      <div class="card consent">
+        <p><b>Vas a hablar con una inteligencia artificial</b>, no con una persona. Puede:</p>
+        <ul>
+          <li>consultar el estado de un folio (por ejemplo COT-20261125-001);</li>
+          <li>registrar una solicitud de cotización de prueba, que la gerencia aprueba en Telegram.</li>
+        </ul>
+        <p class="aviso">Solo datos ficticios. No digas nombres reales, teléfonos ni datos personales. La conversación la procesa ElevenLabs y se usa solo para esta demostración. Si necesitas a una persona, el asistente te indicará el canal de Telegram.</p>
+        <label style="display:flex;gap:.5rem;align-items:flex-start;font-size:.9rem;margin:.6rem 0">
+          <input type="checkbox" id="acepto" style="min-height:auto;margin-top:.2rem"> Entiendo que es una IA y acepto usar el micrófono para esta demostración.
+        </label>
+        <button type="button" id="activar-voz" disabled>Activar asistente de voz</button>
+        <div id="voz-estado" role="status" aria-live="polite"></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0;font-size:1rem">¿Sin micrófono o el servicio no responde?</h3>
+        <p class="aviso">Usa el canal de texto: el bot de Telegram <a href="https://t.me/cni_cotizador_mike_bot" rel="noopener">@cni_cotizador_mike_bot</a> (usuarios de prueba autorizados). Comandos: <code>/nuevo</code>, <code>/estado FOLIO</code>.</p>
+        <p class="aviso">Si el navegador bloqueó el micrófono: icono del candado en la barra de direcciones → Micrófono → Permitir, y recarga la página.</p>
+        <div id="widget-host"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  Proyecto final individual · AI Tools · Miguel Ángel Morales Azamar. Empresa y datos ficticios; ninguna cotización llega a un cliente real.
+  Código y documentación en <a href="https://github.com/a01751340mike/cotizador-norte-industrial">GitHub</a>.
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var AGENT_ID = 'REEMPLAZAR_AGENT_ID'; // identificador público del agente de ElevenLabs (no es secreto)
+  var HORAS_VIGENCIA = 24;           // pasado este tiempo, el panel avisa que los datos están desactualizados
+  var ETIQUETAS = {
+    APROBADO: ['Aprobada', 'var(--ok)'], RECHAZADO: ['Rechazada', 'var(--neutral)'], EXPIRADO: ['Expiró sin decisión', 'var(--warn)'],
+    PENDIENTE_APROBACION: ['Pendiente de gerencia', 'var(--warn)'], ACLARACION: ['Pide aclaración', 'var(--warn)'],
+    FUERA_DE_POLITICA: ['Fuera de política', 'var(--bad)'], BLOQUEADO: ['Bloqueada (guardrail)', 'var(--bad)'],
+    DETENIDO_LIMITE: ['Detenida por límite', 'var(--bad)'], ERROR: ['Error controlado', 'var(--bad)'], EN_PROCESO: ['En proceso', 'var(--neutral)']
+  };
+  var datos = null;
+  var $ = function (id) { return document.getElementById(id); };
+  var fmtMXN = new Intl.NumberFormat('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function texto(el, t) { el.textContent = t; }
+  function mostrarEstado(tipo, msg) { var e = $('estado'); e.dataset.tipo = tipo; e.textContent = msg; e.hidden = !msg; }
+
+  function cargar() {
+    mostrarEstado('carga', 'Cargando datos del panel…');
+    fetch('data/panel.json', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (j) {
+        if (!j || !j.meta || !Array.isArray(j.casos)) throw new Error('Formato inesperado');
+        datos = j; pintarMeta(); llenarFiltroEstado(); pintar();
+      })
+      .catch(function (e) {
+        mostrarEstado('error', 'No se pudieron cargar los datos (' + e.message + '). Recarga la página; si persiste, usa el bot de Telegram.');
+        ['k1', 'k2', 'k3', 'k4'].forEach(function (k) { texto($(k), '—'); });
+      });
+  }
+
+  function pintarMeta() {
+    var gen = new Date(datos.meta.generado);
+    texto($('m-fuente'), datos.meta.fuente);
+    texto($('m-generado'), isNaN(gen) ? '—' : gen.toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' }));
+    var fechas = datos.casos.map(function (c) { return c.fecha; }).filter(Boolean).sort();
+    texto($('m-periodo'), fechas.length ? fechas[0] + ' a ' + fechas[fechas.length - 1] : 'sin casos todavía');
+    var horas = (Date.now() - gen.getTime()) / 36e5;
+    if (!datos.casos.length) mostrarEstado('carga', 'Todavía no hay casos en el registro exportado. Los indicadores aparecerán cuando se procese el primer caso.');
+    else if (horas > HORAS_VIGENCIA) mostrarEstado('viejo', 'Datos desactualizados: la última exportación tiene ' + Math.round(horas) + ' horas. Se actualizan con el workflow de GitHub Actions.');
+    else mostrarEstado('', '');
+  }
+
+  function llenarFiltroEstado() {
+    var sel = $('f-estado');
+    while (sel.options.length > 1) sel.remove(1);
+    Object.keys(ETIQUETAS).forEach(function (k) {
+      if (datos.casos.some(function (c) { return c.estado === k; })) { var o = document.createElement('option'); o.value = k; o.textContent = ETIQUETAS[k][0]; sel.appendChild(o); }
+    });
+  }
+
+  function filtrados() {
+    var canal = $('f-canal').value, est = $('f-estado').value, d = $('f-desde').value, h = $('f-hasta').value;
+    return datos.casos.filter(function (c) {
+      return (!canal || c.canal === canal) && (!est || c.estado === est) && (!d || (c.fecha && c.fecha >= d)) && (!h || (c.fecha && c.fecha <= h));
+    });
+  }
+
+  function mediana(a) { if (!a.length) return null; var s = a.slice().sort(function (x, y) { return x - y; }); var m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
+  function pct(n, d) { return d ? Math.round(n / d * 1000) / 10 : null; }
+
+  function pintar() {
+    if (!datos) return;
+    var cs = filtrados();
+    // KPIs recalculados sobre el filtro (mismas fórmulas que src/core.js exportarPanel)
+    var dec = cs.filter(function (c) { return c.estado === 'APROBADO' || c.estado === 'RECHAZADO'; });
+    var apr = cs.filter(function (c) { return c.estado === 'APROBADO'; });
+    var prop = cs.filter(function (c) { return c.total_mxn !== null && c.total_mxn !== undefined; });
+    var v1 = prop.filter(function (c) { return Number(c.version_final) === 1; });
+    var resp = prop.map(function (c) { return c.respuesta_seg; }).filter(function (x) { return x !== null && x !== undefined; });
+    var cerr = cs.filter(function (c) { return ['APROBADO', 'RECHAZADO', 'EXPIRADO'].indexOf(c.estado) >= 0; });
+    var k1 = pct(apr.length, dec.length), k2 = pct(v1.length, prop.length), k3 = mediana(resp);
+    var k4 = cerr.length ? cerr.reduce(function (a, c) { return a + (c.costo_ia_usd || 0); }, 0) / cerr.length : null;
+    texto($('k1'), k1 === null ? 'Sin datos' : k1 + ' %'); texto($('k1d'), 'n = ' + dec.length + ' decididas.');
+    texto($('k1l'), k1 === null ? 'Aún no hay decisiones de gerencia en el filtro.' : apr.length + ' de ' + dec.length + ' propuestas revisadas fueron aprobadas.');
+    texto($('k2'), k2 === null ? 'Sin datos' : k2 + ' %'); texto($('k2d'), 'n = ' + prop.length + ' propuestas.');
+    texto($('k2l'), k2 === null ? 'Aún no hay propuestas en el filtro.' : (prop.length - v1.length) + ' propuesta(s) necesitaron corrección del revisor antes de llegar a gerencia.');
+    texto($('k3'), k3 === null ? 'Sin datos' : Math.round(k3) + ' s'); texto($('k3d'), 'n = ' + resp.length + '.');
+    texto($('k3l'), k3 === null ? '' : 'La mitad de las propuestas estuvo lista en ' + Math.round(k3) + ' segundos o menos.');
+    texto($('k4'), k4 === null ? 'Sin datos' : '$' + k4.toFixed(4) + ' USD'); texto($('k4d'), 'n = ' + cerr.length + ' casos cerrados.');
+
+    // Distribución por estado
+    var cuenta = {}; cs.forEach(function (c) { cuenta[c.estado] = (cuenta[c.estado] || 0) + 1; });
+    var claves = Object.keys(cuenta).sort(function (a, b) { return cuenta[b] - cuenta[a]; });
+    var max = claves.length ? cuenta[claves[0]] : 1;
+    var ul = $('barras'); ul.innerHTML = '';
+    claves.forEach(function (k) {
+      var et = ETIQUETAS[k] || [k, 'var(--neutral)'];
+      var li = document.createElement('li');
+      var lab = document.createElement('span'); lab.textContent = et[0];
+      var pista = document.createElement('span'); pista.className = 'pista'; pista.setAttribute('aria-hidden', 'true');
+      var b = document.createElement('span'); b.className = 'barra'; b.style.width = (cuenta[k] / max * 100) + '%'; b.style.background = et[1]; b.style.display = 'block';
+      pista.appendChild(b);
+      var n = document.createElement('span'); n.className = 'n'; n.textContent = cuenta[k];
+      li.appendChild(lab); li.appendChild(pista); li.appendChild(n); ul.appendChild(li);
+    });
+    texto($('resumen'), cs.length
+      ? 'Resumen: ' + cs.length + ' casos en el filtro; ' + claves.map(function (k) { return cuenta[k] + ' ' + (ETIQUETAS[k] ? ETIQUETAS[k][0].toLowerCase() : k); }).join(', ') + '.'
+      : 'Sin casos para graficar.');
+
+    // Tabla
+    var tb = $('tbody'); tb.innerHTML = '';
+    cs.forEach(function (c) {
+      var tr = document.createElement('tr');
+      var et = ETIQUETAS[c.estado] || [c.estado, 'var(--neutral)'];
+      var celdas = [c.caso_id, c.fecha || '—', c.canal === 'voz' ? 'Voz' : 'Telegram', null, c.version_final ? 'V' + c.version_final : '—', c.lineas === null ? '—' : c.lineas,
+        c.total_mxn === null ? '—' : fmtMXN.format(c.total_mxn), c.respuesta_seg === null ? '—' : c.respuesta_seg, (c.costo_ia_usd || 0).toFixed(6)];
+      celdas.forEach(function (v, i) {
+        var td = document.createElement(i === 0 ? 'th' : 'td');
+        if (i === 0) td.scope = 'row';
+        if (i === 3) { var p = document.createElement('span'); p.className = 'pill'; p.style.color = et[1]; p.textContent = et[0]; td.appendChild(p); }
+        else td.textContent = v;
+        if (i >= 5) td.className = 'num';
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+    $('sin-resultados').hidden = !(datos.casos.length && !cs.length);
+    texto($('cap'), cs.length + ' de ' + datos.casos.length + ' casos. Sin nombres ni conversaciones: solo folio, canal, estado y cifras simuladas.');
+  }
+
+  ['f-canal', 'f-estado', 'f-desde', 'f-hasta'].forEach(function (id) { $(id).addEventListener('change', pintar); });
+  $('f-reset').addEventListener('click', function () { $('filtros').reset(); pintar(); $('f-canal').focus(); });
+
+  // ---- Voz: consentimiento antes de cargar el widget; errores con alternativa ----
+  $('acepto').addEventListener('change', function () { $('activar-voz').disabled = !this.checked; });
+  $('activar-voz').addEventListener('click', function () {
+    var st = $('voz-estado');
+    if (AGENT_ID.indexOf('REEMPLAZAR') === 0) { st.textContent = 'El asistente de voz no está configurado en esta versión. Usa Telegram.'; return; }
+    st.textContent = 'Comprobando micrófono…';
+    var pedir = navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? navigator.mediaDevices.getUserMedia({ audio: true }) : Promise.reject(new Error('sin soporte'));
+    pedir.then(function (stream) {
+      stream.getTracks().forEach(function (t) { t.stop(); });
+      st.textContent = 'Cargando asistente…';
+      var host = $('widget-host');
+      if (!host.querySelector('elevenlabs-convai')) {
+        var w = document.createElement('elevenlabs-convai'); w.setAttribute('agent-id', AGENT_ID); host.appendChild(w);
+        var s = document.createElement('script'); s.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed'; s.async = true;
+        var t = setTimeout(function () { st.textContent = 'El servicio de voz no respondió. Intenta más tarde o usa Telegram.'; }, 12000);
+        s.onload = function () { clearTimeout(t); st.textContent = 'Asistente listo: usa el botón de llamada que apareció en la esquina inferior.'; };
+        s.onerror = function () { clearTimeout(t); st.textContent = 'No se pudo cargar el servicio de voz (caída o bloqueo de red). Usa el bot de Telegram.'; };
+        document.body.appendChild(s);
+      } else { st.textContent = 'El asistente ya está activo.'; }
+      $('activar-voz').disabled = true;
+    }).catch(function (e) {
+      st.textContent = (e && e.name === 'NotAllowedError')
+        ? 'Permiso de micrófono denegado. Puedes permitirlo desde el candado de la barra de direcciones o usar el bot de Telegram.'
+        : 'No hay micrófono disponible en este dispositivo. Usa el bot de Telegram.';
+    });
+  });
+
+  cargar();
+})();
+</script>
+</body>
+</html>

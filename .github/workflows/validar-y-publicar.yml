@@ -1,0 +1,59 @@
+name: Validar y publicar panel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'   # cada 6 horas: refresca el panel desde la exportación sanitizada
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Obtener exportación sanitizada de n8n (si hay secretos configurados)
+        env:
+          N8N_EXPORT_URL: ${{ secrets.N8N_EXPORT_URL }}
+          N8N_EXPORT_SECRET: ${{ secrets.N8N_EXPORT_SECRET }}
+        run: |
+          if [ -n "$N8N_EXPORT_URL" ] && [ -n "$N8N_EXPORT_SECRET" ]; then
+            if curl -fsS --max-time 30 -H "x-cni-export: $N8N_EXPORT_SECRET" "$N8N_EXPORT_URL" -o /tmp/panel.json; then
+              node -e "JSON.parse(require('fs').readFileSync('/tmp/panel.json','utf8'))" && cp /tmp/panel.json web/data/panel.json
+              echo "Exportación descargada: $(wc -c < web/data/panel.json) bytes"
+            else
+              echo "::warning::No se pudo obtener la exportación; se publica la última copia versionada (web/data/panel.json)."
+            fi
+          else
+            echo "Sin secretos de exportación: se usa web/data/panel.json versionado (exportación manual)."
+          fi
+      - name: Pruebas deterministas (cálculos, reglas, guardrails)
+        run: node tests/test_core.js
+      - name: Controles de publicación (estructura, cálculos y datos sensibles)
+        run: node scripts/validar_publicacion.js
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+  publicar:
+    needs: validar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

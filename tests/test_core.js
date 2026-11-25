@@ -138,12 +138,12 @@ t('folio con formato', () => assert.ok(C.PATRON_FOLIO.test(C.generarFolio('2026-
 
 console.log('Exportación sanitizada');
 t('el panel no expone seudónimos, clientes ni chat_id', () => {
-  const p = C.exportarPanel([{ caso_id: 'COT-20261125-001', canal: 'telegram', solicitante: 'GER-01', cliente: 'Taller Ruiz', chat_id: '123', estado: 'APROBADO', version_aprobada: 2, iteraciones: 2, resultado_json: JSON.stringify(v2), ts_recibido: '2026-11-25T18:00:00Z', ts_decision: '2026-11-25T18:03:00Z' }], [{ caso_id: 'COT-20261125-001', costo_usd: 0.0021 }], ahora.toISOString());
+  const p = C.exportarPanel([{ caso_id: 'COT-20261125-001', canal: 'telegram', solicitante: 'GER-01', cliente: 'Taller Ruiz', chat_id: '123', estado: 'APROBADO', version_aprobada: 2, iteraciones: 2, resultado_json: JSON.stringify(v2), ts_recibido: '2026-11-25T18:00:00Z', ts_propuesta: '2026-11-25T18:00:12Z', ts_decision: '2026-11-25T18:03:00Z' }], [{ caso_id: 'COT-20261125-001', costo_usd: 0.0021 }], ahora.toISOString());
   const s = JSON.stringify(p);
   assert.ok(!/GER-01|Taller Ruiz|"chat_id"/.test(s));
   assert.strictEqual(p.kpis.tasa_aprobacion_pct, 100);
   assert.strictEqual(p.kpis.tasa_primera_vuelta_pct, 0);
-  assert.strictEqual(p.kpis.ciclo_mediana_seg, 180);
+  assert.strictEqual(p.kpis.respuesta_mediana_seg, 12);
 });
 
 console.log(`\n${ok} pruebas aprobadas, ${fallas} fallidas`);

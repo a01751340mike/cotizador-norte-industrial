@@ -311,7 +311,7 @@ function exportarPanel(casos, costos, ahoraISO) {
       if (r && r.total_mxn !== undefined) { total = r.total_mxn; lineas = r.lineas ? r.lineas.length : null; }
     } catch (e) { /* resultado no disponible */ }
     const ini = c.ts_recibido ? new Date(c.ts_recibido) : null;
-    const fin = c.ts_decision ? new Date(c.ts_decision) : (c.ts_propuesta ? new Date(c.ts_propuesta) : null);
+    const fin = c.ts_propuesta ? new Date(c.ts_propuesta) : null;
     const ciclo = ini && fin ? Math.round((fin - ini) / 1000) : null;
     const costoCaso = (costos || []).filter((k) => k.caso_id === c.caso_id).reduce((a, k) => a + Number(k.costo_usd || 0), 0);
     return {
@@ -323,7 +323,7 @@ function exportarPanel(casos, costos, ahoraISO) {
       iteraciones: c.iteraciones || 0,
       lineas,
       total_mxn: total,
-      ciclo_seg: ciclo,
+      respuesta_seg: ciclo,
       costo_ia_usd: Math.round(costoCaso * 1e6) / 1e6,
     };
   });
@@ -331,7 +331,7 @@ function exportarPanel(casos, costos, ahoraISO) {
   const decididos = filas.filter((f) => ['APROBADO', 'RECHAZADO'].includes(f.estado));
   const aprobados = filas.filter((f) => f.estado === 'APROBADO');
   const primeraVuelta = conPropuesta.filter((f) => Number(f.version_final) === 1);
-  const ciclos = filas.filter((f) => terminales.includes(f.estado) || f.estado === 'PENDIENTE_APROBACION').map((f) => f.ciclo_seg).filter((x) => x !== null);
+  const ciclos = conPropuesta.map((f) => f.respuesta_seg).filter((x) => x !== null);
   const completados = filas.filter((f) => terminales.includes(f.estado));
   const costoCompletados = completados.reduce((a, f) => a + f.costo_ia_usd, 0);
   const mediana = (arr) => { if (!arr.length) return null; const s = [...arr].sort((a, b) => a - b); const m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
@@ -349,8 +349,8 @@ function exportarPanel(casos, costos, ahoraISO) {
       tasa_aprobacion_den: decididos.length,
       tasa_primera_vuelta_pct: conPropuesta.length ? Math.round((primeraVuelta.length / conPropuesta.length) * 1000) / 10 : null,
       tasa_primera_vuelta_den: conPropuesta.length,
-      ciclo_mediana_seg: mediana(ciclos),
-      ciclo_den: ciclos.length,
+      respuesta_mediana_seg: mediana(ciclos),
+      respuesta_den: ciclos.length,
       costo_ia_promedio_usd: completados.length ? Math.round((costoCompletados / completados.length) * 1e6) / 1e6 : null,
       costo_ia_den: completados.length,
     },

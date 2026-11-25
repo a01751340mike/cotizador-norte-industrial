@@ -1,0 +1,5 @@
+{
+  "meta": {"empresa": "Distribuidora Norte Industrial (ficticia)", "fuente": "Registro privado de casos en n8n · exportación sanitizada", "generado": "2026-11-25T01:44:36Z", "datos_ficticios": true, "modo": "SIMULADO", "version_core": "1.0.0"},
+  "kpis": {"tasa_aprobacion_pct": null, "tasa_aprobacion_den": 0, "tasa_primera_vuelta_pct": null, "tasa_primera_vuelta_den": 0, "respuesta_mediana_seg": null, "respuesta_den": 0, "costo_ia_promedio_usd": null, "costo_ia_den": 0},
+  "casos": []
+}
