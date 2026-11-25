@@ -44,7 +44,7 @@ Panel (Pages) ──► agente ElevenLabs ──► herramienta gestionar_caso (
 CNI · Exportación sanitizada ──► GitHub Actions (pruebas + controles) ──► GitHub Pages
 ```
 
-Diagrama detallado: `docs/arquitectura.md`.
+Diagrama detallado: `docs/arquitectura.md`. Informe técnico y empresarial (12 págs.): `docs/informe.pdf` y `docs/informe.docx`.
 
 ## Dónde corre cada componente
 
