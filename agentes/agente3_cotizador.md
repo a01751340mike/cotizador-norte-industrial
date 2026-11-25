@@ -2,7 +2,7 @@
 rol: Agente 3 · Cotizador
 version: 1.0.0
 modelo: claude-haiku-5-5
-max_tokens: 900
+max_tokens: 1500
 skill: skills/cotizar-material-electrico/SKILL.md (cargado en tiempo de ejecución)
 herramientas: calcularCotizacion() y aplicarCorrecciones() de src/core.js (deterministas, en el servidor)
 ---

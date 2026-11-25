@@ -2,7 +2,7 @@
 rol: Agente 4 · Revisor
 version: 1.0.0
 modelo: claude-haiku-5-5
-max_tokens: 900
+max_tokens: 1500
 skill: skills/revisar-cotizacion/SKILL.md (cargado en tiempo de ejecución)
 herramientas: revisarDeterminista() de src/core.js
 permisos: puede impedir la liberación; no puede modificar la cotización
