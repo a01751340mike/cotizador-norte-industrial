@@ -1,0 +1,155 @@
+{
+  "caso_id": "COT-20261124-002",
+  "canal": "telegram",
+  "estado_final": "APROBADO",
+  "total_mxn": 42195,
+  "traza": [
+    {
+      "ts": "2026-11-25T02:02:58.954Z",
+      "agente": "orquestador",
+      "estado": "PLAN",
+      "plan": [
+        "agente1_intake",
+        "agente2_catalogo",
+        "agente3_cotizador",
+        "agente4_revisor"
+      ],
+      "limites": {
+        "max_iteraciones": 3,
+        "max_llamadas": 8,
+        "limite_costo_usd": 0.02,
+        "tiempo_max_seg": 120
+      },
+      "skills": [
+        {
+          "nombre": "cotizar-material-electrico",
+          "version": "1.0.0",
+          "huella": "930c5fbb",
+          "bytes": 4034
+        },
+        {
+          "nombre": "revisar-cotizacion",
+          "version": "1.0.0",
+          "huella": "216a6626",
+          "bytes": 3257
+        }
+      ]
+    },
+    {
+      "ts": "2026-11-25T02:03:00.969Z",
+      "agente": "agente1_intake",
+      "estado": "OK",
+      "llamada_id": "COT-20261124-002-L1",
+      "duracion_ms": 1321,
+      "resultado": {
+        "cliente": "Taller Eléctrico Ruiz",
+        "partidas": 3
+      }
+    },
+    {
+      "ts": "2026-11-25T02:03:03.480Z",
+      "agente": "agente2_catalogo",
+      "estado": "OK",
+      "llamada_id": "COT-20261124-002-L2",
+      "duracion_ms": 2221,
+      "fuentes": [
+        "catalogo:ACC-CON-DUP",
+        "catalogo:CAB-THW-12R",
+        "catalogo:PRO-ITM-1P20"
+      ],
+      "advertencias": []
+    },
+    {
+      "ts": "2026-11-25T02:03:03.503Z",
+      "agente": "agente3_cotizador",
+      "estado": "CALCULADO",
+      "version": 1,
+      "herramienta": "calcularCotizacion",
+      "ajustes": {},
+      "total_mxn": 41916.6
+    },
+    {
+      "ts": "2026-11-25T02:03:06.864Z",
+      "agente": "agente3_cotizador",
+      "estado": "OK",
+      "version": 1,
+      "llamada_id": "COT-20261124-002-L3",
+      "duracion_ms": 3131,
+      "skill": "cotizar-material-electrico@1.0.0"
+    },
+    {
+      "ts": "2026-11-25T02:03:06.865Z",
+      "agente": "agente4_revisor",
+      "estado": "DEVUELTO",
+      "version": 1,
+      "capa": "reglas",
+      "llamada_id": null,
+      "hallazgos": [
+        {
+          "tipo": "MARGEN",
+          "sku": "ACC-CON-DUP",
+          "detalle": "Margen 16.30% menor al mínimo 18%",
+          "correccion": "Reducir el descuento de ACC-CON-DUP en pasos de 0.5 puntos hasta que el margen sea ≥ 18%"
+        }
+      ],
+      "correcciones": [
+        "Reducir el descuento de ACC-CON-DUP en pasos de 0.5 puntos hasta que el margen sea ≥ 18%"
+      ],
+      "nota": "optimización: no se llamó al modelo revisor"
+    },
+    {
+      "ts": "2026-11-25T02:03:06.880Z",
+      "agente": "agente3_cotizador",
+      "estado": "CALCULADO",
+      "version": 2,
+      "herramienta": "calcularCotizacion",
+      "ajustes": {
+        "ACC-CON-DUP": 6
+      },
+      "total_mxn": 42195
+    },
+    {
+      "ts": "2026-11-25T02:03:10.556Z",
+      "agente": "agente3_cotizador",
+      "estado": "OK",
+      "version": 2,
+      "llamada_id": "COT-20261124-002-L4",
+      "duracion_ms": 3405,
+      "skill": "cotizar-material-electrico@1.0.0"
+    },
+    {
+      "ts": "2026-11-25T02:03:10.556Z",
+      "agente": "agente4_revisor",
+      "estado": "REGLAS_OK",
+      "version": 2,
+      "capa": "reglas",
+      "hallazgos": []
+    },
+    {
+      "ts": "2026-11-25T02:03:13.091Z",
+      "agente": "agente4_revisor",
+      "estado": "APROBADO",
+      "version": 2,
+      "capa": "modelo",
+      "llamada_id": "COT-20261124-002-L5",
+      "duracion_ms": 2218,
+      "skill": "revisar-cotizacion@1.0.0",
+      "observaciones": "Importes, subtotal, IVA y total cuadran. Los supuestos coinciden con las cifras (descuentos de 6 % y 5 %). Margen mínimo 18.09 %. Sin advertencias de stock ni promesas fuera de política."
+    },
+    {
+      "ts": "2026-11-25T02:03:13.108Z",
+      "agente": "orquestador",
+      "estado": "PENDIENTE_APROBACION",
+      "duracion_total_ms": 14157,
+      "llamadas_llm": 5,
+      "costo_acumulado_usd": 0.0022606,
+      "motivo": null
+    }
+  ],
+  "decision_humana": {
+    "decision": "aprobado",
+    "decidido_por": "GER-01",
+    "canal": "Telegram (botón con nonce y versión V2)",
+    "nota": "reuso posterior del botón rechazado por estado APROBADO"
+  }
+}

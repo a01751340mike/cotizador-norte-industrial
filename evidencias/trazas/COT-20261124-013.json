@@ -1,0 +1,109 @@
+{
+  "caso_id": "COT-20261124-013",
+  "canal": "voz",
+  "estado_final": "PENDIENTE_APROBACION",
+  "total_mxn": 4605.2,
+  "conversacion_elevenlabs": "conv_8601m888g7xhff9tx70ed63850tf",
+  "traza": [
+    {
+      "ts": "2026-11-25T02:28:42.309Z",
+      "agente": "orquestador",
+      "estado": "PLAN",
+      "plan": [
+        "agente1_intake",
+        "agente2_catalogo",
+        "agente3_cotizador",
+        "agente4_revisor"
+      ],
+      "limites": {
+        "max_iteraciones": 3,
+        "max_llamadas": 8,
+        "limite_costo_usd": 0.02,
+        "tiempo_max_seg": 120
+      },
+      "skills": [
+        {
+          "nombre": "cotizar-material-electrico",
+          "version": "1.0.0",
+          "huella": "930c5fbb",
+          "bytes": 4034
+        },
+        {
+          "nombre": "revisar-cotizacion",
+          "version": "1.0.0",
+          "huella": "216a6626",
+          "bytes": 3257
+        }
+      ]
+    },
+    {
+      "ts": "2026-11-25T02:28:43.450Z",
+      "agente": "agente1_intake",
+      "estado": "OK",
+      "llamada_id": "COT-20261124-013-L1",
+      "duracion_ms": 927,
+      "resultado": {
+        "cliente": "Ferretería La Paz",
+        "partidas": 2
+      }
+    },
+    {
+      "ts": "2026-11-25T02:28:45.007Z",
+      "agente": "agente2_catalogo",
+      "estado": "OK",
+      "llamada_id": "COT-20261124-013-L2",
+      "duracion_ms": 1304,
+      "fuentes": [
+        "catalogo:ILU-LED-9W",
+        "catalogo:ACC-CIN-AIS"
+      ],
+      "advertencias": []
+    },
+    {
+      "ts": "2026-11-25T02:28:45.024Z",
+      "agente": "agente3_cotizador",
+      "estado": "CALCULADO",
+      "version": 1,
+      "herramienta": "calcularCotizacion",
+      "ajustes": {},
+      "total_mxn": 4605.2
+    },
+    {
+      "ts": "2026-11-25T02:28:46.541Z",
+      "agente": "agente3_cotizador",
+      "estado": "OK",
+      "version": 1,
+      "llamada_id": "COT-20261124-013-L3",
+      "duracion_ms": 1269,
+      "skill": "cotizar-material-electrico@1.0.0"
+    },
+    {
+      "ts": "2026-11-25T02:28:46.542Z",
+      "agente": "agente4_revisor",
+      "estado": "REGLAS_OK",
+      "version": 1,
+      "capa": "reglas",
+      "hallazgos": []
+    },
+    {
+      "ts": "2026-11-25T02:28:47.757Z",
+      "agente": "agente4_revisor",
+      "estado": "APROBADO",
+      "version": 1,
+      "capa": "modelo",
+      "llamada_id": "COT-20261124-013-L4",
+      "duracion_ms": 970,
+      "skill": "revisar-cotizacion@1.0.0",
+      "observaciones": "Precios, descuentos, márgenes (34.74 % y 40 %), subtotal, IVA 16 % y total cuadran. Supuestos coinciden con las cifras, sin promesas fuera de política, sin advertencias de stock y con leyenda SIMULADO."
+    },
+    {
+      "ts": "2026-11-25T02:28:47.771Z",
+      "agente": "orquestador",
+      "estado": "PENDIENTE_APROBACION",
+      "duracion_total_ms": 5465,
+      "llamadas_llm": 4,
+      "costo_acumulado_usd": 0.0010448,
+      "motivo": null
+    }
+  ]
+}

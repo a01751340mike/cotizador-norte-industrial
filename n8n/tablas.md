@@ -1,7 +1,7 @@
 # Tablas privadas en n8n Cloud (Data Tables)
 
 Todas viven solo en n8n Cloud. Al repo únicamente se exportan agregados sanitizados.
-Tipos de columna de n8n Data Tables: texto, número, booleano y fecha.
+Tipos de columna de n8n Data Tables: texto, número, booleano y fecha. Las marcas de tiempo se guardan como texto ISO 8601 para evitar conversiones de zona horaria. Detalle completo de columnas: `datos/diccionario_datos.md`.
 
 ## catalogo
 Se importa desde `datos/catalogo.csv`. Solo lectura para el Agente 2.
@@ -38,7 +38,7 @@ Lista blanca. **Nunca se exporta.** Los chat ID son identificadores privados.
 | activo | booleano | Permite desactivar sin borrar |
 
 ## casos
-Estado vigente de cada caso. Se exporta solo agregado y sin seudónimos.
+Estado vigente de cada caso. Se exporta solo agregado y sin seudónimos. Estados: EN_PROCESO, PENDIENTE_APROBACION, APROBADO, RECHAZADO, EXPIRADO, ACLARACION, FUERA_DE_POLITICA, BLOQUEADO, DETENIDO_LIMITE, ERROR.
 
 | Columna | Tipo | Uso |
 |---|---|---|
@@ -53,12 +53,18 @@ Estado vigente de cada caso. Se exporta solo agregado y sin seudónimos.
 | costo_acumulado_usd | número | Suma de la tabla costos para el caso |
 | limite_costo_usd | número | Presupuesto del caso |
 | aprobacion_nonce | texto | Código de un solo uso del botón |
-| aprobacion_expira | fecha | Límite para aprobar |
+| aprobacion_expira | texto (ISO) | Límite para aprobar |
 | decision | texto | aprobado, rechazado, expirado |
 | decidido_por | texto | Seudónimo |
-| ts_recibido | fecha | Inicio del caso |
-| ts_decision | fecha | Fin del caso |
+| ts_recibido | texto (ISO) | Inicio del caso |
+| ts_decision | texto (ISO) | Fin del caso |
 | resultado_json | texto | Propuesta final (JSON) |
+| traza_json | texto | Traza sanitizada de los 5 roles |
+| chat_id_solicitante | texto | Para notificar al solicitante (privado) |
+| solicitud | texto | Texto enmascarado |
+| llamadas_llm | número | Llamadas al modelo del caso |
+| total_mxn | número | Total simulado |
+| ts_propuesta | texto (ISO) | Propuesta lista (KPI de tiempo de respuesta) |
 | motivo | texto | Razón de rechazo, error o detención |
 
 ## costos
@@ -72,5 +78,5 @@ Deduplicación persistente.
 | evento_id | texto | update_id de Telegram, id del callback o id de la llamada de voz |
 | tipo | texto | mensaje, callback, voz |
 | caso_id | texto | Caso relacionado |
-| ts | fecha | Cuándo llegó |
+| ts | texto (ISO) | Cuándo llegó |
 | procesado | booleano | Si ya se ejecutó la acción |
