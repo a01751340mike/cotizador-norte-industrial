@@ -303,7 +303,11 @@ function validarDecision(caso, cb, usuario, ahoraISO) {
 // ---------- exportación sanitizada para el panel público ----------
 function exportarPanel(casos, costos, ahoraISO) {
   const terminales = ['APROBADO', 'RECHAZADO', 'EXPIRADO'];
-  const filas = (casos || []).map((c) => {
+  const ahoraD = new Date(ahoraISO);
+  const filas = (casos || []).map((c0) => {
+    // Vencimiento perezoso: una aprobación pendiente con plazo vencido se reporta como EXPIRADO
+    // aunque el workflow horario aún no la haya marcado (ahorra ejecuciones de n8n).
+    const c = (c0.estado === 'PENDIENTE_APROBACION' && c0.aprobacion_expira && new Date(c0.aprobacion_expira) < ahoraD) ? Object.assign({}, c0, { estado: 'EXPIRADO' }) : c0;
     let total = null;
     let lineas = null;
     try {

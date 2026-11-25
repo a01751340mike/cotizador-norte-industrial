@@ -147,5 +147,10 @@ t('el panel no expone seudónimos, clientes ni chat_id', () => {
   assert.strictEqual(p.casos[0].fecha, '2026-11-25');
 });
 
+t('pendiente vencido se reporta como EXPIRADO en el panel', () => {
+  const p = C.exportarPanel([{ caso_id: 'COT-20261125-002', canal: 'voz', estado: 'PENDIENTE_APROBACION', aprobacion_expira: '2026-11-25T17:00:00Z' }], [], ahora.toISOString());
+  assert.strictEqual(p.casos[0].estado, 'EXPIRADO');
+});
+
 console.log(`\n${ok} pruebas aprobadas, ${fallas} fallidas`);
 if (fallas) process.exit(1);

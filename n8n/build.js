@@ -579,7 +579,7 @@ const money = (x) => Number(x).toLocaleString('es-MX', { minimumFractionDigits: 
 let m;
 if (!caso) m = 'No encontré el folio ' + q.folio + '.';
 else if (q.usuario.rol !== 'gerente' && caso.solicitante !== q.usuario.seudonimo) m = 'Ese folio no pertenece a tu usuario.';
-else m = '📄 ' + caso.caso_id + '\\nEstado: ' + caso.estado + '\\nVersión: V' + (caso.version_aprobada || caso.version_actual || 0) + ' · vueltas del revisor: ' + (caso.iteraciones || 0) +
+else m = '📄 ' + caso.caso_id + '\\nEstado: ' + (caso.estado === 'PENDIENTE_APROBACION' && caso.aprobacion_expira && new Date(caso.aprobacion_expira) < new Date() ? 'EXPIRADO (plazo vencido)' : caso.estado) + '\\nVersión: V' + (caso.version_aprobada || caso.version_actual || 0) + ' · vueltas del revisor: ' + (caso.iteraciones || 0) +
   (caso.total_mxn ? '\\nTotal: $' + money(caso.total_mxn) + ' MXN (SIMULADO)' : '') + (caso.decision ? '\\nDecisión: ' + caso.decision + ' por ' + caso.decidido_por : '') + (caso.motivo ? '\\nNota: ' + caso.motivo : '');
 return [{ json: { chat_id: q.chat_id, mensaje: m } }];`));
   N.push(nodo('Responder botón', 'n8n-nodes-base.telegram', 1.2, [1760, y + 300], { resource: 'callback', operation: 'answerQuery', queryId: '={{ $json.callback_id }}', additionalFields: { text: 'Procesando…' } }, { credentials: CRED.telegram, onError: 'continueRegularOutput', webhookId: uid() }));
@@ -687,7 +687,7 @@ return [{ json: { http: 200, respuesta: { ok: true, folio: r.caso_id, estado: r.
 // =====================================================================
 {
   const N = [], C = {};
-  N.push(nodo('Cada 5 minutos', 'n8n-nodes-base.scheduleTrigger', 1.2, [0, 300], { rule: { interval: [{ field: 'minutes', minutesInterval: 5 }] } }));
+  N.push(nodo('Cada hora', 'n8n-nodes-base.scheduleTrigger', 1.2, [0, 300], { rule: { interval: [{ field: 'hours', hoursInterval: 1 }] } }));
   N.push(dtGet('Pendientes', [220, 300], 'casos', [['estado', 'eq', 'PENDIENTE_APROBACION']]));
   N.push(codeNode('Vencidos', [440, 300], `
 const ahora = new Date();
@@ -699,7 +699,7 @@ const casos = $('Pendientes').all().map((i) => i.json);
 return $('Vencidos').all().map((i) => i.json).map((v) => casos.find((c) => c.caso_id === v.caso_id)).filter((c) => c && c.chat_id_solicitante)
   .map((c) => ({ json: { chat_id: String(c.chat_id_solicitante), mensaje: '⌛ ' + c.caso_id + ' EXPIRÓ sin decisión de gerencia. La acción de prueba no se ejecutó.' } }));`));
   N.push(tgSend('Telegram · expiración', [1100, 300]));
-  conectar(C, 'Cada 5 minutos', 'Pendientes');
+  conectar(C, 'Cada hora', 'Pendientes');
   conectar(C, 'Pendientes', 'Vencidos');
   conectar(C, 'Vencidos', 'Marcar expirado');
   conectar(C, 'Marcar expirado', 'Avisos de expiración');
