@@ -46,7 +46,7 @@ const PRELUDE = `// ===== núcleo determinista (src/core.js v${require(path.join
 `// ===== utilidades del orquestador =====
 const PROMPTS = ${JSON.stringify(PROMPTS)};
 function paso(est, agente, estado, extra) { est.traza.push(Object.assign({ ts: new Date().toISOString(), agente, estado }, extra || {})); }
-function req(est, system, user, max_tokens) { return { model: est.politicas.modelo, max_tokens, system, messages: [{ role: 'user', content: user }] }; }
+function req(est, system, user, max_tokens) { return { model: est.politicas.modelo, max_tokens, system, messages: [{ role: 'user', content: user }], thinking: { type: 'disabled' }, output_config: { effort: 'low' } }; }
 function cerrar(est, estadoFinal, motivo) { if (estadoFinal) est.estado_final = estadoFinal; if (motivo) est.motivo = motivo; return [{ json: { estado: est, siguiente: 'cerrar' } }]; }
 `;
 const code = (body) => PRELUDE + '\n// ===== lógica del nodo =====\n' + body.trim() + '\n';
