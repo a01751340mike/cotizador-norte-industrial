@@ -52,3 +52,15 @@ Todas las capturas muestran solo el chat del bot de prueba o las páginas del pr
 | COT-20261124-011 | Telegram | DETENIDO_LIMITE | P09 |
 | COT-20261124-012 | Telegram | ERROR (API) | P08 |
 | COT-20261124-013 | Voz | PENDIENTE_APROBACION, V1, 4,605.20 | P03 |
+
+## Capturas de plataformas (26-nov-2026, prefijo `X_`)
+| Archivo | Qué muestra |
+|---|---|
+| `X_n8n_workflows.jpg` | Workflows del proyecto publicados en n8n Cloud (88 ejecuciones de producción, 0 fallidas) |
+| `X_n8n_orquestador.jpg` | Lienzo del orquestador con los 4 agentes |
+| `X_n8n_loop.jpg` | Ejecución 19 (COT-002): Agente 3 y ruta del revisor con 2 pasadas (V1→V2) |
+| `X_n8n_tabla_casos.jpg` | Tabla `casos` con los 13 folios (chat_id difuminado) |
+| `X_n8n_tabla_costos.jpg` | Tabla `costos` con tokens por llamada |
+| `X_anthropic_uso.jpg` | Consola de Anthropic: 69,614 tokens de entrada y 15,795 de salida = suma de `costos/costos.csv` |
+| `X_elevenlabs_agente.jpg`, `X_elevenlabs_herramienta.jpg` | Agente de voz y herramienta `gestionar_caso` (3 llamadas, 0 % error) |
+| `X_github_repo.jpg`, `X_github_actions_corridas.jpg`, `X_actions_falla_log.jpg`, `X_actions_recuperacion.jpg` | Repositorio, corridas de Actions, log de la corrida bloqueada y corrida recuperada |
